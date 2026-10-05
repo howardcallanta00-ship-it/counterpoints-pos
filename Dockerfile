@@ -1,7 +1,7 @@
 FROM php:8.3-apache
-RUN apt-get update && apt-get install -y --no-install-recommends libfreetype6-dev libjpeg62-turbo-dev libpng-dev libicu-dev default-mysql-client \
+RUN apt-get update && apt-get install -y --no-install-recommends libfreetype6-dev libjpeg62-turbo-dev libpng-dev libicu-dev libzip-dev default-mysql-client \
  && docker-php-ext-configure gd --with-freetype --with-jpeg \
- && docker-php-ext-install -j$(nproc) gd intl mysqli opcache \
+ && docker-php-ext-install -j$(nproc) gd intl mysqli opcache zip \
  && a2enmod rewrite headers remoteip \
  && rm -rf /var/lib/apt/lists/*
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
