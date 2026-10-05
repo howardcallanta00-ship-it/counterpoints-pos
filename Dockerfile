@@ -1,8 +1,3 @@
-FROM composer:2 AS vendor
-WORKDIR /app
-COPY composer.json composer.lock* ./
-RUN composer install --no-dev --prefer-dist --no-interaction --no-progress --optimize-autoloader
-
 FROM php:8.3-apache
 RUN apt-get update && apt-get install -y --no-install-recommends libfreetype6-dev libjpeg62-turbo-dev libpng-dev libicu-dev default-mysql-client \
  && docker-php-ext-configure gd --with-freetype --with-jpeg \
@@ -15,7 +10,9 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
  && a2enconf counterpoint
 WORKDIR /var/www/html
 COPY . .
-COPY --from=vendor /app/vendor ./vendor
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
+RUN composer install --no-dev --prefer-dist --no-interaction --no-progress --optimize-autoloader \
+ && composer clear-cache
 RUN mkdir -p writable/cache writable/logs writable/session public/uploads/avatars \
  && chown -R www-data:www-data writable public/uploads/avatars \
  && find writable public/uploads/avatars -type d -exec chmod 775 {} \;
