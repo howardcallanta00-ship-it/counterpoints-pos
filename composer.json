@@ -1,0 +1,22 @@
+{
+  "name": "howard/pos-account-manager",
+  "description": "Secure Point-of-Sale account administration built with CodeIgniter 4.",
+  "license": "MIT",
+  "type": "project",
+  "require": {
+    "php": "^8.2",
+    "codeigniter4/framework": "^4.6",
+    "ext-fileinfo": "*",
+    "ext-gd": "*",
+    "ext-intl": "*",
+    "ext-mysqli": "*"
+  },
+  "require-dev": {
+    "fakerphp/faker": "^1.24",
+    "phpunit/phpunit": "^10.5"
+  },
+  "autoload": {"psr-4": {"App\\": "app/", "Config\\": "app/Config/"}},
+  "autoload-dev": {"psr-4": {"Tests\\Support\\": "tests/_support/"}},
+  "scripts": {"test": "phpunit"},
+  "config": {"sort-packages": true, "allow-plugins": {"composer/package-versions-deprecated": true}}
+}

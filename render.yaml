@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: counterpoint-pos
+    runtime: docker
+    healthCheckPath: /health
+    autoDeploy: false
+    envVars:
+      - key: CI_ENVIRONMENT
+        value: production
+      - key: APP_BASE_URL
+        sync: false
+      - key: APP_KEY
+        generateValue: true
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: "3306"
+      - key: DB_NAME
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_DRIVER
+        value: MySQLi
+      - key: AVATAR_UPLOAD_PATH
+        value: /var/www/html/public/uploads/avatars
