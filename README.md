@@ -83,12 +83,12 @@ Set `DB_DRIVER=MySQLi`. If Clever Cloud requires TLS, place the CA certificate i
 2. In Render, create a Blueprint or Docker web service from the repository. The included `render.yaml` disables automatic deployment by default.
 3. Add all `DB_*` secrets from Clever Cloud, a production `APP_BASE_URL` ending in `/`, a generated `APP_KEY`, `CI_ENVIRONMENT=production`, and `SESSION_DRIVER=CodeIgniter\\Session\\Handlers\\FileHandler`.
 4. Set the health-check path to `/health`.
-5. Attach a persistent disk and mount it at `/var/www/html/public/uploads/avatars`; set `AVATAR_UPLOAD_PATH` to the same path. Only this upload directory needs persistence.
-6. Before serving traffic, open a one-off Render shell and run `php spark migrate --all`. Review the migration plan and back up an existing database first.
-7. If demo data is genuinely required, temporarily set `SEED_ADMIN_PASSWORD`, run `php spark db:seed DatabaseSeeder` once, then remove the variable. Do not seed on every deploy.
+5. On the free Render plan set `AVATAR_STORAGE_DRIVER=database`; processed avatars are stored in Clever Cloud MySQL and survive Render restarts without a disk.
+6. Set `RUN_MIGRATIONS_ON_START=true`. CodeIgniter migrations are idempotent and run before Apache starts, which is required because free Render services do not include shell access.
+7. For the first deployment only, set `SEED_ADMIN_PASSWORD` to a temporary value of at least 12 characters. Startup creates `admin` only when it does not already exist. Remove the variable immediately after the first successful deployment and redeploy.
 8. Verify `/health`, public pages, login, both directories, record edits, logout, and an avatar replacement over HTTPS.
 
-Without a persistent disk, Render's filesystem is ephemeral and avatars disappear after redeployment. If the chosen plan has no disk support, replace local avatar persistence with private S3-compatible object storage, validated uploads, generated object keys, HTTPS delivery, and lifecycle controls.
+Free Render filesystems are ephemeral. This project therefore supports `AVATAR_STORAGE_DRIVER=database` for no-cost deployments. Paid installations can continue using filesystem storage with `AVATAR_UPLOAD_PATH`, or adopt S3-compatible object storage at larger scale.
 
 ## Security notes
 

@@ -2,6 +2,7 @@ services:
   - type: web
     name: counterpoint-pos
     runtime: docker
+    plan: free
     healthCheckPath: /health
     autoDeploy: false
     envVars:
@@ -25,3 +26,9 @@ services:
         value: MySQLi
       - key: AVATAR_UPLOAD_PATH
         value: /var/www/html/public/uploads/avatars
+      - key: AVATAR_STORAGE_DRIVER
+        value: database
+      - key: RUN_MIGRATIONS_ON_START
+        value: "true"
+      - key: SEED_ADMIN_PASSWORD
+        sync: false

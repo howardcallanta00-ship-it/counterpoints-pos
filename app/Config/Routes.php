@@ -4,6 +4,7 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Pages::home');
 $routes->get('about', 'Pages::about');
 $routes->get('health', 'Health::index');
+$routes->get('avatars/(:segment)', 'Avatars::show/$1');
 $routes->get('login', 'Auth::login');
 $routes->post('login', 'Auth::attempt');
 $routes->post('logout', 'Auth::logout', ['filter' => 'auth']);
